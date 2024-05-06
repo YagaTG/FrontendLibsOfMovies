@@ -1,0 +1,86 @@
+.movie-item {
+  width: 25%;
+}
+
+.container {
+  height: 100%;
+}
+
+.heading {
+  &__container {
+    background-color: red;
+    background-image: url("/main-page/main_img.png");
+  }
+
+  &__wrapper {
+    position: relative;
+    display: flex;
+    padding: 20px 40px;
+    background-color: rgba($color: black, $alpha: 0.3);
+    
+  }
+  &__title {
+    max-width: 45%;
+    font-size: 64px;
+  }
+  &__registration {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+  }
+}
+
+.prices {
+  &__container {
+    background-color: black;
+    padding: 20px 0px;
+  }
+
+  &__title {
+    font-size: 48px;
+    text-align: center;
+  }
+  &__subscribes {
+    display: flex;
+    justify-content: center;
+    padding: 0px 40px;
+  }
+}
+
+.subscribe {
+  &__item {
+    display: inline-block;
+    flex-direction: column;
+    text-align: center;
+    width: 25%;
+    margin-right: 40px;
+    padding: 8px 8px;
+    border: 4px solid white;
+    // height: 100%;
+    // overflow: scroll;
+  }
+  &__header {
+    font-size: 24px;
+    font-weight: bold;
+    border-bottom: 2px solid white;
+  }
+  &__price {
+    font-size: 20px;
+  }
+  &__btn {
+  }
+}
+
+.main-swiper {
+  &__container {
+    height: 0px;
+  }
+}
+
+.footer {
+  width: 100%;
+  height: 20px;
+  background-color: red;
+}

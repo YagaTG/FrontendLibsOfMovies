@@ -1,0 +1,14 @@
+.search {
+  &__container {
+  }
+  &__input {
+    width: 80%;
+    height: 40px;
+    color: black;
+    border: black 2px solid;
+    background-color: white;
+    font-size: 18px;
+    outline: none;
+    margin-bottom: 20px;
+  }
+}
