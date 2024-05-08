@@ -6,19 +6,33 @@ export const Input = ({
   name,
   placeholder,
   onChange,
-  validation,
+  validation = false,
+  type = "text",
   ...inputProps
 }: IInputProps) => {
   return (
     <>
-      <input
-        className="input"
-        {...register(name, validation)}
-        onChange={onChange}
-        placeholder={placeholder}
-        name={name}
-        {...inputProps}
-      />
+      {type == "text" && (
+        <input
+          className="input"
+          {...register(name, validation)}
+          onChange={onChange}
+          placeholder={placeholder}
+          name={name}
+          {...inputProps}
+        />
+      )}
+      {type == "textarea" && (
+        <textarea
+          className="textarea"
+          {...register(name, validation)}
+          onChange={onChange}
+          placeholder={placeholder}
+          name={name}
+          type="textarea"
+          {...inputProps}
+        />
+      )}
     </>
   );
 };
