@@ -3,20 +3,23 @@ import { Header } from "../../components/Header/Header";
 import Button from "../../ui/Button/Button";
 import Input from "../../ui/Input/Input";
 import { getMovie } from "../../api/Movie";
-import { json, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { createComment, getMovieComments } from "../../api/Comment";
 import { getMovieReviews } from "../../api/Review";
 import { useUser } from "../../hooks/useUser";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import 'swiper/css/pagination';
+import "swiper/css/pagination";
 
 import "./style.scss";
 
-import { Pagination } from 'swiper/modules';
+import { Pagination } from "swiper/modules";
+import { useQuery } from "react-query";
 
 export default function MoviePage() {
-  const [movie, setMovie] = useState(null);
+  const { isLoading, data: movie } = useQuery("movieData", () =>
+    getMovie(movieId)
+  );
   const [reviews, setReviews] = useState([]);
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
@@ -25,7 +28,6 @@ export default function MoviePage() {
 
   useEffect(() => {
     console.log(movieId);
-    getMovie(movieId, setMovie);
     getMovieReviews(movieId, setReviews);
     getMovieComments(movieId, setComments);
   }, []);
@@ -41,6 +43,9 @@ export default function MoviePage() {
 
   //comments component
 
+  if (isLoading) {
+    return <h2 style={{ color: "black" }}>Loading..</h2>;
+  }
   return (
     <>
       <Header></Header>
