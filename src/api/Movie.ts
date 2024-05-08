@@ -9,7 +9,7 @@ export interface Movie {
 type MovieItem = {
   item: Movie;
 };
-const ip = "192.168.0.101"
+const ip = "192.168.0.101";
 export const getAllMovies = (succesFunc: () => {}) => {
   // Запрос ко всем фильмам БД
   const data = fetch(`http://${ip}:3500/api/getAllMovies`)
@@ -21,11 +21,11 @@ export const getAllMovies = (succesFunc: () => {}) => {
 
 export const getMovie = (id: string | undefined, succesFunc) => {
   // Запрос к фильму
-  const data = fetch(`http://${ip}:3500/api/getMovieData?movieId=${id}`)
+  return fetch(`http://${ip}:3500/api/getMovieData?movieId=${id}`)
     .then((r) => r.json())
-    .then((data) => succesFunc(data))
-    .catch((err) => alert(err));
-  return;
+    // .then((data) => succesFunc(data))
+    // .catch((err) => alert(err));
+  // return;
 };
 
 export const ratingMovie = (): void => {
