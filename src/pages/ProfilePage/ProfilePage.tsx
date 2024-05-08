@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 import { Header } from "../../components/Header/Header";
 import { useUser } from "../../hooks/useUser";
-import { searchUsers } from "../../helpers/search";
 import "./style.scss";
 import { useNavigate } from "react-router-dom";
 
-import { SettingsScreen, FriendsScreen } from "./Screens/screens";
+import {
+  SettingsScreen,
+  FriendsScreen,
+  StatisticScreen,
+  HelpScreen,
+  PlaylistScreen,
+} from "./Screens/screens";
 
 export default function ProfilePage(currentScreen: string) {
   const [user, setUser] = useState(null);
@@ -19,6 +24,9 @@ export default function ProfilePage(currentScreen: string) {
   const profileScreens = {
     profile: <SettingsScreen user={user} />,
     friends: <FriendsScreen user={user} />,
+    statistic: <StatisticScreen />,
+    help: <HelpScreen />,
+    playlists: <PlaylistScreen user={user} />,
   };
   useEffect(() => {
     if (!checkLogin()) navigate("/login");
@@ -57,7 +65,7 @@ export default function ProfilePage(currentScreen: string) {
             </li>
             <li
               className="sidebar__item"
-              onClick={() => setActiveScreen("statistics")}
+              onClick={() => setActiveScreen("statistic")}
             >
               Статистика
             </li>
@@ -70,8 +78,6 @@ export default function ProfilePage(currentScreen: string) {
           </ul>
         </div>
         {activeScreen && profileScreens[activeScreen]}
-
-        {/* Friends Screen */}
       </div>
 
       <footer className="footer"></footer>

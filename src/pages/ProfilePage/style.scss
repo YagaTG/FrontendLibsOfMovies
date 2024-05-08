@@ -33,18 +33,30 @@ ul {
 }
 
 .profile {
-  width: 74%;
-  margin: 20px 0px;
-  padding: 2px 4px;
-  color: black;
+  &__wrapper {
+    width: 74%;
+    margin: 20px 0px;
+    padding: 2px 4px;
+    color: black;
+  }
+  &__title {
+    font-size: 24px;
+    font-weight: bold;
+  }
 }
 
 .friends {
   width: 74%;
   color: black;
   &__title {
-    font-size: 24px;
+    margin-bottom: 12px;
+    font-size: 20px;
     font-weight: bold;
+    border-bottom: 2px solid black;
+  }
+  &__empty-msg {
+    margin-bottom: 24px;
+    text-align: center;
   }
   &__not-approved {
     display: flex;
@@ -112,16 +124,105 @@ ul {
     }
   }
   &__button {
+    margin-right: 8px;
     padding: 8px;
-    border-radius: 8px;
-    border: 1px solid rgb(26, 165, 26);
-    background-color: rgb(26, 165, 26);
+    // border-radius: 8px;
+
     cursor: pointer;
     transition: all 0.15s ease-in;
-    &:hover {
-      border: 1px solid rgb(21, 139, 21);
-      background-color: rgb(21, 139, 21);
-      transform: translateX(3px);
+    &_add {
+      color: black;
+      border: 1px solid black;
+      background-color: white;
+      &:hover {
+        color: white;
+        border: 1px solid black;
+        background-color: black;
+        transform: translateX(2px);
+      }
     }
+    &_del {
+      border: 1px solid black;
+      background-color: black;
+      &:hover {
+        border: 1px solid black;
+        color: black;
+        background-color: white;
+        transform: translateX(2px);
+      }
+    }
+  }
+}
+
+.playlist {
+  &__handlers {
+    margin-bottom: 16px;
+  }
+  &__modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba($color: #fefefe, $alpha: 0.4);
+  }
+  &__create-form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40%;
+    height: 400px;
+    padding: 16px 12px;
+    border: 2px solid black;
+    background-color: white;
+    transform: translate(-50%, -50%);
+  }
+  &__collection {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40%;
+    height: 80%;
+    padding: 16px 12px;
+    border: 2px solid black;
+    background-color: white;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.create-form {
+  &__title {
+    margin-bottom: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+  }
+}
+
+.collection__title {
+  margin-bottom: 8px;
+
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  border-bottom: 2px solid black;
+}
+
+.playlist-item {
+  &__block {
+    border: 2px solid black;
+    height: 240px;
+    cursor: pointer;
+  }
+  &__name {
+    text-align: center;
+    font-size: 18px;
+  }
+  width: 24%;
+}
+
+.react-select {
+  &__control {
+    background-color: red;
   }
 }
