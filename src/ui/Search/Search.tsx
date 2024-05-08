@@ -1,17 +1,15 @@
 import { useState } from "react";
 import { ISearch } from "./ISearch";
 import Button from "../Button/Button";
-import {searchMovies} from "../../helpers/search"
 import "./style.scss";
 
-export const Search = ({ handleData, placeholder }: ISearch) => {
+export const Search = ({ handleData, placeholder, searchFunc }: ISearch) => {
   const [searchText, setSearchText] = useState("");
   const handleSearch = async () => {
     if (searchText.trim()) {
       console.log("Поиск по", searchText);
-      const movies = await searchMovies(searchText);
-      console.log(movies);
-      handleData(movies);
+      const data = await searchFunc(searchText);
+      handleData(data, searchText);
       
     }
   };

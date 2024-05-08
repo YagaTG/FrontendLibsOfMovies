@@ -9,11 +9,10 @@ export const searchMovies = async (movieName) => {
   return movies;
 };
 
-export const searchUsers = async (username) => {
+export const searchUser = async (username) => {
   const res = await fetch(
-    `http://${ip}:3500/api/searchUsers?username=${username}`
+    `http://${ip}:3500/api/searchUser?username=${username}`
   );
   const users = await res.json();
-  console.log(movies);
   return users;
 };
