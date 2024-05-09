@@ -1,0 +1,53 @@
+.messenger {
+  display: flex;
+}
+
+.dialogs {
+  width: 25%;
+//   height: 100%;
+  min-height: calc(100vh - 80px);
+
+  border-right: 2px solid black;
+  &__handlers {
+    padding: 20px 12px;
+  }
+}
+
+.dialog {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 4px 4px;
+  color: black;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  &__avatar {
+    width: 40px;
+    height: 40px;
+    margin-right: 8px;
+    border: 1px solid black;
+    border-radius: 50%;
+  }
+  &__data {
+  }
+  &__name {
+    font-weight: bold;
+  }
+  &__last-message {
+    color: gray;
+  }
+}
+
+.message-area {
+  width: 74%;
+  &__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: gray;
+  }
+}

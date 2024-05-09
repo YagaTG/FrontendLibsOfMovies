@@ -8,6 +8,7 @@ import MoviePage from "./pages/MoviePage/MoviePage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import { FeedPage } from "./pages/FeedPage/FeedPage";
 import { QueryClientProvider, QueryClient } from "react-query";
+import { MessengerPage } from "./pages/MessengerPage/MessengerPage";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/movies" element={<MoviesPage />} />
+          <Route path="/messenger" element={<MessengerPage />} />
           <Route path="/feednews" element={<FeedPage />} />
           <Route path="/movie/:movieId" element={<MoviePage />} />
         </Routes>
