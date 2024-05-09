@@ -1,3 +1,5 @@
+import { ip } from "../config.server";
+
 export interface IReview {
   id: number;
   userId: number;
@@ -6,7 +8,7 @@ export interface IReview {
   rating: number;
   text: string;
 }
-const ip = "192.168.0.101"
+
 export const getMovieReviews = (
   movieId: string | undefined,
   succesFunc

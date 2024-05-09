@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 
 import axios from "axios";
 import { redirect, useNavigate } from "react-router-dom";
+import { ip } from "../../config.server";
 
 type FormTypes = {
   login: string;
@@ -27,7 +28,7 @@ export default function LoginPage() {
     console.log(data);
     loginUser(data);
   };
-  const ip = "192.168.0.101"
+
   const loginUser = async ({ login, password }: FormTypes): Promise<void> => {
     await fetch(`http://${ip}:3500/api/loginUser`, {
       method: "post",

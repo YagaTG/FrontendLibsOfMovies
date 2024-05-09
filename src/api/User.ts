@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { ip } from "../config.server";
 
 export interface User {
   id: number;
@@ -8,7 +9,6 @@ export interface User {
 }
 
 // const navigate = useNavigate();
-const ip = "192.168.0.101";
 
 export const registerUser = () => {};
 export const logout = () => {

@@ -1,4 +1,4 @@
-const ip = "192.168.0.101";
+import { ip } from "../config.server";
 
 export const createPlaylist = async (name, description, userId, playlist) => {
   const playlistData = playlist.map((item) => {

@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ip } from "../../config.server";
 
 type FormTypes = {
   mail: string;
@@ -28,7 +29,7 @@ export default function RegisterPage() {
     console.log(data);
     registerUser(data);
   };
-  const ip = "192.168.0.101"
+
   const registerUser = async ({
     mail,
     login,
@@ -37,7 +38,7 @@ export default function RegisterPage() {
     await fetch(`http://${ip}:3500/api/registerUser`, {
       method: "post",
       credentials: "include",
-      body: JSON.stringify({mail, login, password }),
+      body: JSON.stringify({ mail, login, password }),
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Credentials": "true",
