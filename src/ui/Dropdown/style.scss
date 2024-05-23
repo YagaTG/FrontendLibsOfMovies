@@ -1,0 +1,34 @@
+.dropdown {
+  position: absolute;
+  top: 4px;
+  right: 16px;
+  // width: 180px;
+  background-color: white;
+  &__btn {
+    font-size: 24px;
+    font-weight: bold;
+    user-select: none;
+    cursor: pointer;
+    &:hover {
+      color: #999;
+    }
+  }
+  &__content {
+    position: absolute;
+    background-color: black;
+    color: white;
+    border: 2px solid black;
+    padding: 8px;
+    user-select: none;
+    font-weight: 600;
+    z-index: 2;
+  }
+  &__item {
+    margin-bottom: 8px;
+    cursor: pointer;
+    &:last-child {
+      margin-bottom: 0px;
+      color: rgb(225, 88, 88);
+    }
+  }
+}
