@@ -49,16 +49,6 @@ export default function LoginPage() {
         }
       })
       .catch((err) => setError("Ошибка сервера"));
-
-    // axios
-    //   .post("http://192.168.0.100:3500/api/loginUser", {
-    //     login,
-    //     password,
-    //   }, {withCredentials: true})
-    //   .then((r) => console.log(r))
-    //   .catch((err) => setError("Ошибка сервера"));
-    // console.log(await res.json())
-    // document.cookie = "123";
   };
 
   return (
@@ -86,7 +76,7 @@ export default function LoginPage() {
                 placeholder={"Пароль"}
                 register={register}
                 name={"password"}
-                type={"password"}
+                // type={"password"}
                 validation={{
                   required: "Поле дожно быть заполнено",
                   validate: (formValue) => {
