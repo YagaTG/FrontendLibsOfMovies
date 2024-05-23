@@ -10,6 +10,7 @@ import {
 } from "../../../api/User";
 
 import { searchUser } from "../../../helpers/search";
+import { UserAvatar } from "../../../components/UserAvatar";
 
 export const FriendsScreen = ({ user }) => {
   const [outcommingRequests, setOutcommingRequests] = useState(null);
@@ -37,18 +38,26 @@ export const FriendsScreen = ({ user }) => {
   const friendItem = (item, type: string, dismiss = false) => {
     return (
       <div className="friends-item" key={item?.id}>
-        <div className="friends-item__avatar"></div>
+        <UserAvatar
+          username={item?.username}
+          className="friends-item__avatar"
+        ></UserAvatar>
         <div className="friends-item__data">
           <div className="friends-item__name">{item?.username}</div>
-          {
-            (type != "friend" ?? (
-              <div className="friends-item__stats">
-                <p className="friends-item__stat">Друзей: {item?.friends}</p>
-                <p className="friends-item__stat">Оценки: 0</p>
-                <p className="friends-item__stat">Плейлисты: 0</p>
-              </div>
-            ))
-          }
+          {type != "friend" ?? (
+            <div className="friends-item__stats">
+              <p className="friends-item__stat">Друзей: {item?.friends}</p>
+              <p className="friends-item__stat">Оценки: 0</p>
+              <p className="friends-item__stat">Плейлисты: 0</p>
+            </div>
+          )}
+          {/* <div className="friends-item__stats">
+            <p className="friends-item__stat">
+              Друзей: {JSON.parse(item?.friends).length}
+            </p>
+            <p className="friends-item__stat">Оценки: 0</p>
+            <p className="friends-item__stat">Плейлисты: 0</p>
+          </div> */}
           {type === "newFriend" && (
             <button
               className="friends-item__button friends-item__button_add"
@@ -101,7 +110,7 @@ export const FriendsScreen = ({ user }) => {
             <button
               className="friends-item__button friends-item__button_del"
               onClick={() => {
-                dismissRequest(item.id, user.id, (data) =>
+                dismissRequest(item.incoming_user ?? item.id, user.id, (data) =>
                   getFriendsRequest(user.id, setOutcommingRequests)
                 );
               }}
@@ -193,31 +202,7 @@ export const FriendsScreen = ({ user }) => {
           {isOutcommingTab ? (
             outcommingRequests && outcommingRequests.length > 0 ? (
               outcommingRequests.map((item) => {
-                return (
-                  <div className="friends-item" key={item.incommingUser}>
-                    <div className="friends-item__avatar"></div>
-                    <div className="friends-item__data">
-                      <div className="friends-item__name">{item?.username}</div>
-                      <div className="friends-item__stats">
-                        <p className="friends-item__stat">
-                          Друзей: {JSON.parse(item?.friends).length}
-                        </p>
-                        <p className="friends-item__stat">Оценки: 0</p>
-                        <p className="friends-item__stat">Плейлисты: 0</p>
-                      </div>
-                      <button
-                        className="friends-item__button friends-item__button_del"
-                        onClick={() => {
-                          dismissRequest(item.incoming_user, user.id, (data) =>
-                            getFriendsRequest(user.id, setOutcommingRequests)
-                          );
-                        }}
-                      >
-                        Отклонить
-                      </button>
-                    </div>
-                  </div>
-                );
+                return friendItem(item, "alreadyInvited");
               })
             ) : (
               <p className="friends__empty-msg">Список пуст</p>
