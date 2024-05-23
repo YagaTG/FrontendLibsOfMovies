@@ -28,3 +28,7 @@ export const getUserPlaylist = (userId: number) => {
     (res) => res.json()
   );
 };
+
+export const deletePlaylist = (id: number) => {
+  return fetch(`http://${ip}:3500/api/deletePlaylist?playlistId=${id}`);
+};
