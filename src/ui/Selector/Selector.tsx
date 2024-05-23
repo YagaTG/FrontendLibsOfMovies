@@ -1,8 +1,9 @@
 import AsyncSelect from "react-select/async";
 import "./style.scss";
+import Select from "react-select";
 
 export const Selector = ({
-  type = "async",
+  type,
   loadOptions,
   handleChange,
   defaultOptions,
@@ -16,7 +17,7 @@ export const Selector = ({
   };
   return (
     <>
-      {type == "async" && (
+      {type == "async" ? (
         <AsyncSelect
           loadOptions={loadOptions}
           defaultOptions={defaultOptions}
@@ -25,6 +26,16 @@ export const Selector = ({
           isMulti
           placeholder="Введите название фильма.."
           onChange={handleChange}
+        />
+      ) : (
+        <Select
+          options={defaultOptions}
+          defaultValue={defaultOptions[0]}
+          className="selector"
+          components={{ Option: CustomOption }}
+          isSearchable={false}
+          onChange={handleChange}
+          isClearable={false}
         />
       )}
     </>
