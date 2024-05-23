@@ -11,6 +11,7 @@ import {
   HelpScreen,
   PlaylistScreen,
 } from "./Screens/screens";
+import { RatingsScreen } from "./Screens/RatingsScreen";
 
 export default function ProfilePage(currentScreen: string) {
   const [user, setUser] = useState(null);
@@ -27,6 +28,7 @@ export default function ProfilePage(currentScreen: string) {
     statistic: <StatisticScreen />,
     help: <HelpScreen />,
     playlists: <PlaylistScreen user={user} />,
+    ratings: <RatingsScreen />,
   };
   useEffect(() => {
     if (!checkLogin()) navigate("/login");
@@ -79,8 +81,6 @@ export default function ProfilePage(currentScreen: string) {
         </div>
         {activeScreen && profileScreens[activeScreen]}
       </div>
-
-      <footer className="footer"></footer>
     </>
   );
 }
