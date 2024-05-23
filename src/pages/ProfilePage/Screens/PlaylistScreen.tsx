@@ -5,12 +5,19 @@ import { Input } from "../../../ui/Input/Input";
 import { useForm } from "react-hook-form";
 import { getAllMovies } from "../../../api/Movie";
 import { Selector } from "../../../ui/Selector/Selector";
-import { createPlaylist, getUserPlaylist } from "../../../api/Playlists";
+import {
+  createPlaylist,
+  deletePlaylist,
+  getUserPlaylist,
+} from "../../../api/Playlists";
 import { useQuery } from "react-query";
+import Dropdown from "../../../ui/Dropdown/Dropdown";
 
 export const PlaylistScreen = ({ user }) => {
   //   const [playlists, setPlaylists] = useState([1]);
   const [isCreateWindow, setCreateWindow] = useState(false);
+  const [isPlaylistItemMenu, setPlaylistItemMenu] = useState(false);
+  const [isEditPlaylist, setEditPlaylist] = useState(false);
   const [isPlaylistWindow, setPlaylistWindow] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const [activePlaylist, setActivePlaylist] = useState(null);
@@ -83,6 +90,23 @@ export const PlaylistScreen = ({ user }) => {
                   <img />
                 </div>
                 <p className="playlist-item__name">{item.name}</p>
+                <Dropdown
+                  items={
+                    <div className="dropdown__items">
+                      <p className="dropdown__item">Изменить</p>
+                      <p
+                        className="dropdown__item"
+                        onClick={() => {
+                          deletePlaylist(item.id).then((data) => {
+                            console.log(data);
+                          });
+                        }}
+                      >
+                        Удалить
+                      </p>
+                    </div>
+                  }
+                />
               </div>
             );
           })}
@@ -139,8 +163,15 @@ export const PlaylistScreen = ({ user }) => {
             <div className="collection">
               <div className="collection__img"></div>
               <div className="collection__title">{activePlaylist?.name}</div>
-
-              {/* <div className="collection__block"></div> */}
+              <div className="collection__desc">
+                {activePlaylist?.description}
+              </div>
+              <div className="collection__movies">
+                {activePlaylist?.movies &&
+                  activePlaylist.movies.map((movie) => (
+                    <div className="collection__movie-item">{movie?.name}</div>
+                  ))}
+              </div>
             </div>
           </div>
         </div>
