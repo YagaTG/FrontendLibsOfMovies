@@ -7,3 +7,8 @@
     transform: rotate(360deg);
   }
 }
+
+.row {
+  display: flex;
+  align-items: center;
+}
