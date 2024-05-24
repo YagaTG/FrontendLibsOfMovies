@@ -24,7 +24,7 @@ export default function ProfilePage(currentScreen: string) {
     statistic: <StatisticScreen />,
     help: <HelpScreen />,
     playlists: <PlaylistScreen user={user} />,
-    ratings: <RatingsScreen />,
+    ratings: <RatingsScreen user={user} />,
   };
 
   return (

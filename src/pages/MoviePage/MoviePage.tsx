@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { Header } from "../../components/Header/Header";
 import Button from "../../ui/Button/Button";
 import Input from "../../ui/Input/Input";
-import { getMovie } from "../../api/Movie";
+import { getMovie, getMovieRating, ratingMovie } from "../../api/Movie";
 import { useParams } from "react-router-dom";
 import { createComment, getMovieComments } from "../../api/Comment";
 import { getMovieReviews } from "../../api/Review";
 import { useUser } from "../../hooks/useUser";
+import { UserAvatar } from "../../components/UserAvatar";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -17,13 +18,18 @@ import { Pagination } from "swiper/modules";
 import { useQuery } from "react-query";
 
 export default function MoviePage() {
+  const { isLoading: isRatingLoading, data: prevRating } = useQuery(
+    "movieRating",
+    () =>
+      getMovieRating(JSON.parse(localStorage.getItem("userData")).id, movieId)
+  );
   const { isLoading, data: movie } = useQuery("movieData", () =>
     getMovie(movieId)
   );
   const [reviews, setReviews] = useState([]);
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
-  const [ratingMovie, setRatingMovie] = useState(null);
+  const [currentRating, setCurrentRating] = useState(null);
   const { movieId } = useParams();
 
   useEffect(() => {
@@ -32,11 +38,26 @@ export default function MoviePage() {
     getMovieComments(movieId, setComments);
   }, []);
   const { checkLogin } = useUser();
+
+  const handleRating = () => {
+    if (true && currentRating) {
+      ratingMovie(
+        JSON.parse(localStorage.getItem("userData")).id,
+        movieId,
+        currentRating
+      ).then(() => {
+        console.log(1);
+      });
+    } else {
+      // TODO: сделать модальное окно, предлагающее авторизацию
+      return;
+    }
+  };
+
   const handleCreateComment = () => {
-    const userData = checkLogin();
     console.log(userData);
-    if (userData) {
-      createComment(movieId, userData.id, commentText, userData.username);
+    if (true) {
+      createComment(movieId, userData.id, commentText);
     }
   };
   // review component
@@ -63,11 +84,37 @@ export default function MoviePage() {
             </div>
             <div className="movie__info">
               <div className="description">
-                <div className="movie__title">{movie?.name}</div>
+                <div className="movie__title">
+                  {movie?.name} ({movie.year})
+                </div>
                 <div className="movie__rating">{movie?.rating}/10</div>
 
                 <div className="description__text">{movie?.description}</div>
               </div>
+              {prevRating ? (
+                <div>
+                  <p>Ваша оценка {prevRating.rating}</p>
+                  <Button
+                    isDarkBackground
+                    text="Изменить"
+                    onClick={handleRating}
+                  />
+                </div>
+              ) : (
+                <div>
+                  <input
+                    type="number"
+                    onChange={(e) => {
+                      setCurrentRating(e.currentTarget.value);
+                    }}
+                  ></input>
+                  <Button
+                    isDarkBackground
+                    text="Оценить"
+                    onClick={handleRating}
+                  />
+                </div>
+              )}
               <Swiper
                 slidesPerView={3}
                 className="screenshots"
@@ -151,7 +198,7 @@ export default function MoviePage() {
             color="white"
             text={"Отправить"}
             onClick={handleCreateComment}
-            isDisable={commentText}
+            // isDisable={commentText}
           ></Button>
         </div>
         <div className="comments__comments">
@@ -160,9 +207,12 @@ export default function MoviePage() {
               return (
                 <div className="comment">
                   <div className="comment__user">
-                    <div className="comment__avatar"></div>
+                    <UserAvatar
+                      username={comment?.user.username}
+                      className="comment__avatar"
+                    ></UserAvatar>
                     <div className="comment__nickname">
-                      {comment?.authorUsername}
+                      {comment?.user.username}
                     </div>
                   </div>
                   <div className="comment__text">{comment?.text}</div>
