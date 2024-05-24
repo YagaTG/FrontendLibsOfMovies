@@ -2,8 +2,11 @@
   position: absolute;
   top: 4px;
   right: 16px;
-  // width: 180px;
-  background-color: white;
+  background-color: transparent;
+  &__header {
+    top: 50%;
+    transform: translateY(-50%);
+  }
   &__btn {
     font-size: 24px;
     font-weight: bold;
@@ -15,6 +18,8 @@
   }
   &__content {
     position: absolute;
+    display: flex;
+    flex-direction: column;
     background-color: black;
     color: white;
     border: 2px solid black;
@@ -24,7 +29,8 @@
     z-index: 2;
   }
   &__item {
-    margin-bottom: 8px;
+    margin-bottom: 4px;
+    color: white;
     cursor: pointer;
     &:last-child {
       margin-bottom: 0px;

@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import "./style.scss";
-import Tooltip from "../../ui/Tooltip/Tooltip";
+import Dropdown from "../../ui/Dropdown/Dropdown";
 
 export const Header = () => {
   const [isShowTooltip, setShowTooltip] = useState(false);
   const [user, setUser] = useState(null);
-  useEffect(()=> {
-    if(localStorage.getItem("userData")) {
-      setUser(JSON.parse(localStorage.getItem("userData")))
+  useEffect(() => {
+    if (localStorage.getItem("userData")) {
+      setUser(JSON.parse(localStorage.getItem("userData")));
     }
-  }, [])
+  }, []);
   const showTooltip = () => {
-    if (isShowTooltip) setShowTooltip(false)
+    if (isShowTooltip) setShowTooltip(false);
     else setShowTooltip(true);
   };
 
@@ -29,21 +29,25 @@ export const Header = () => {
           <a href="/movies" className="header__link">
             Сообщения
           </a>
-          
         </div>
         <div className="header__col">
           {user ? (
-            <a className="header__link" onClick={showTooltip}>
-              {user.username}
-            </a>
+            <Dropdown
+              isHeader
+              headerElem={<a className="header__link">{user.username}</a>}
+            />
           ) : (
-            <a href="/login" className="header__link">
-              Войти
-            </a>
+            <Dropdown
+              isHeader
+              headerElem={
+                <a href="/login" className="header__link">
+                  Войти
+                </a>
+              }
+            />
           )}
         </div>
       </div>
-      {isShowTooltip && <Tooltip></Tooltip>}
     </>
   );
 };

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function Dropdown({
   isDarkBackground,
   isHeader = false,
+  headerElem,
   items,
 }) {
   const [isOpen, setOpen] = useState(false);
@@ -13,12 +14,30 @@ export default function Dropdown({
   return (
     <>
       {isHeader ? (
-        <div className="dropdown">
-          <div className="dropdown__btn">Войти</div>
-          <a className="dropdown__link" href="/profile">
-            В профиль
-          </a>
-          <Button text="Войти" onClick={() => navigate("/login")}></Button>
+        <div className="dropdown dropdown__header">
+          <div
+            className="dropdown__btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpen(!isOpen);
+            }}
+          >
+            {headerElem}
+          </div>
+          {isOpen && (
+            <div
+              className="dropdown__content"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <a className="dropdown__item" href="/profile">
+                В профиль
+              </a>
+              <a className="dropdown__item" href="/profile">
+                Друзья
+              </a>
+              <Button text="Войти" isDarkBackground onClick={() => navigate("/login")}></Button>
+            </div>
+          )}
         </div>
       ) : (
         <div className="dropdown">

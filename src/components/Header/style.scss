@@ -8,6 +8,7 @@
     background-color: black;
     border-bottom: 2px solid #111010;
     &__col {
+        position: relative;
         display: flex;
     }
     &__link {
