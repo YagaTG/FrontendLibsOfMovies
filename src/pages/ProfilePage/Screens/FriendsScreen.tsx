@@ -3,6 +3,7 @@ import { Search } from "../../../ui/Search/Search";
 
 import {
   addFriend,
+  deleteFriend,
   dismissRequest,
   getFriendsRequest,
   getIncommingFriendsRequest,
@@ -12,22 +13,26 @@ import {
 import { searchUser } from "../../../helpers/search";
 import { UserAvatar } from "../../../components/UserAvatar";
 
-export const FriendsScreen = ({ user }) => {
+export const FriendsScreen = ({ user, refreshFunc }) => {
   const [outcommingRequests, setOutcommingRequests] = useState(null);
   const [incommingRequests, setIncommingRequests] = useState(null);
-  const [friends, setFriends] = useState([1]);
+  const [friends, setFriends] = useState([]);
   const [isOutcommingTab, setOutcommingTab] = useState(true);
   const [searchString, setSearchString] = useState("");
   const [globalUsers, setGlobalUsers] = useState([]);
+
   useEffect(() => {
+    refreshFunc();
+  }, []);
+
+  useEffect(() => {
+    console.log(user);
     if (user) {
-      setFriends(JSON.parse(user.friends));
+      setFriends(user.friends);
       getFriendsRequest(user.id, setOutcommingRequests);
       getIncommingFriendsRequest(user.id, setIncommingRequests);
     }
   }, [JSON.stringify(user)]);
-
-  const refreshUserData = () => {};
 
   const handleFindedUsers = (data, searchString: string) => {
     console.log(data);
@@ -75,12 +80,10 @@ export const FriendsScreen = ({ user }) => {
               <button
                 className="friends-item__button friends-item__button_add"
                 onClick={() => {
-                  const newFriends = [...JSON.parse(user.friends)];
-                  console.log(item);
                   addFriend(
                     user.id,
                     [
-                      ...JSON.parse(user.friends),
+                      ...user.friends,
                       { id: item.outcomming_user, username: item.username },
                     ],
                     item.outcomming_user,
@@ -88,7 +91,7 @@ export const FriendsScreen = ({ user }) => {
                       ...JSON.parse(item.friends),
                       { id: user.id, username: user.username },
                     ],
-                    (data) => console.log(data)
+                    (data) => refreshFunc()
                   );
                 }}
               >
@@ -118,6 +121,22 @@ export const FriendsScreen = ({ user }) => {
               Отклонить
             </button>
           )}
+          {type === "friend" && (
+            <button
+              className="friends-item__button friends-item__button_del"
+              onClick={() => {
+                const oldUserFriendsList = [...user.friends];
+                const newUserFriendsList = oldUserFriendsList.filter(
+                  (friend) => friend.id != item.id
+                );
+                deleteFriend(user.id, newUserFriendsList, item.id).then(
+                  (data) => refreshFunc()
+                );
+              }}
+            >
+              Удалить
+            </button>
+          )}
         </div>
       </div>
     );
@@ -139,7 +158,7 @@ export const FriendsScreen = ({ user }) => {
               {globalUsers.map((item) => {
                 if (
                   user.id != item.id &&
-                  !JSON.parse(user.friends).find((friend) => {
+                  !user.friends.find((friend) => {
                     console.log(friend);
                     console.log(item);
                     return friend.id == item.id;
@@ -171,7 +190,7 @@ export const FriendsScreen = ({ user }) => {
         {friends?.length > 0 ? (
           <div className="friends__list">
             {friends.map((item) => {
-              return friendItem(item);
+              return friendItem(item, "friend");
             })}
           </div>
         ) : (

@@ -14,26 +14,18 @@ import {
 import { RatingsScreen } from "./Screens/RatingsScreen";
 
 export default function ProfilePage(currentScreen: string) {
-  const [user, setUser] = useState(null);
-  const [users, setUsers] = useState([]);
-  // Вынести в хук
-
+  const { user, refreshUserData } = useUser();
   const navigate = useNavigate();
-  const { checkLogin, getUserData } = useUser();
 
   const [activeScreen, setActiveScreen] = useState("profile");
   const profileScreens = {
     profile: <SettingsScreen user={user} />,
-    friends: <FriendsScreen user={user} />,
+    friends: <FriendsScreen user={user} refreshFunc={refreshUserData} />,
     statistic: <StatisticScreen />,
     help: <HelpScreen />,
     playlists: <PlaylistScreen user={user} />,
     ratings: <RatingsScreen />,
   };
-  useEffect(() => {
-    if (!checkLogin()) navigate("/login");
-    else setUser(getUserData());
-  }, []);
 
   return (
     <>

@@ -16,6 +16,12 @@ export const logout = () => {
   //   navigate(0);
 };
 
+export const getMe = (uid) => {
+  return fetch(`http://${ip}:3500/api/getMe?userId=${uid}`, {
+    credentials: "include",
+  }).then((res) => res.json());
+};
+
 export const getFriendsRequest = (userId: number, succesFunc): void => {
   const data = fetch(
     `http://${ip}:3500/api/getFriendsRequests?userId=${userId}`
@@ -83,7 +89,6 @@ export const addFriend = async (
   outcommingUserFriends: [],
   succesFunc
 ) => {
-  console.log(newFriends);
   await fetch(`http://${ip}:3500/api/addFriend`, {
     method: "post",
     body: JSON.stringify({
@@ -100,6 +105,22 @@ export const addFriend = async (
     .then((r) => r.json())
     .then((data) => succesFunc(data))
     .catch((err) => alert(err));
+};
+
+export const deleteFriend = (userId, newUserFriendsList, friendId) => {
+  console.log(userId, newUserFriendsList, friendId);
+  return fetch(`http://${ip}:3500/api/deleteFriend`, {
+    method: "post",
+    body: JSON.stringify({
+      userId,
+      newUserFriendsList: JSON.stringify(newUserFriendsList),
+      friendId,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Credentials": "true",
+    },
+  }).then((r) => r.json());
 };
 
 export const getUserAvata = async (username: string) => {
