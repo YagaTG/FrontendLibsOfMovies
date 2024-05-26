@@ -26,7 +26,7 @@ export const Header = () => {
           <a href="/feednews" className="header__link">
             Лента
           </a>
-          <a href="/movies" className="header__link">
+          <a href="/messenger" className="header__link">
             Сообщения
           </a>
         </div>
