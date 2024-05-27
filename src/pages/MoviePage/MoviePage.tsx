@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Header } from "../../components/Header/Header";
 import Button from "../../ui/Button/Button";
-import Input from "../../ui/Input/Input";
+import { Input } from "../../ui/Input/Input";
 import { getMovie, getMovieRating, ratingMovie } from "../../api/Movie";
 import { useParams } from "react-router-dom";
 import { createComment, getMovieComments } from "../../api/Comment";
-import { getMovieReviews } from "../../api/Review";
+import { createReview, getMovieReviews } from "../../api/Review";
 import { useUser } from "../../hooks/useUser";
 import { UserAvatar } from "../../components/UserAvatar";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -16,6 +16,7 @@ import "./style.scss";
 
 import { Pagination } from "swiper/modules";
 import { useQuery } from "react-query";
+import { useForm, useFieldArray } from "react-hook-form";
 
 export default function MoviePage() {
   const { isLoading: isRatingLoading, data: prevRating } = useQuery(
@@ -26,18 +27,33 @@ export default function MoviePage() {
   const { isLoading, data: movie } = useQuery("movieData", () =>
     getMovie(movieId)
   );
-  const [reviews, setReviews] = useState([]);
+  const { data: reviews } = useQuery("reviews", () => getMovieReviews(movieId));
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
   const [currentRating, setCurrentRating] = useState(null);
+  const [isCreateReviewWindow, setCreateReviewWindow] = useState(false);
   const { movieId } = useParams();
 
+  const form = useForm({
+    defaultValues: {
+      reviewText: "",
+      reviewPlus: [],
+      reviewMinus: [],
+    },
+  });
+  const { register, reset, handleSubmit, control } = form;
+  const { fields, append } = useFieldArray({
+    control, // control props comes from useForm (optional: if you are using FormContext)
+    name: "reviewPlus", // unique name for your Field Array
+  });
+  const { fields: fieldsMinuses, append: appendMinus } = useFieldArray({
+    control, // control props comes from useForm (optional: if you are using FormContext)
+    name: "reviewMinus", // unique name for your Field Array
+  });
   useEffect(() => {
     console.log(movieId);
-    getMovieReviews(movieId, setReviews);
     getMovieComments(movieId, setComments);
   }, []);
-  const { checkLogin } = useUser();
 
   const handleRating = () => {
     if (true && currentRating) {
@@ -62,6 +78,30 @@ export default function MoviePage() {
   };
   // review component
 
+  const checkLogin = () => {
+    const userData = localStorage.getItem("userData");
+    if (userData) {
+      setCreateReviewWindow(true);
+    } else {
+      console.log("Unlogin");
+    }
+  };
+
+  const onSubmit = (data) => {
+    const pluses = [...data.reviewPlus];
+    const onlyFilledPlus = pluses.filter((item) => item.plus.trim());
+    const minuses = [...data.reviewMinus];
+    const onlyFilledMinus = minuses.filter((item) => item.minus.trim());
+    createReview(
+      JSON.parse(localStorage.getItem("userData")).id,
+      movieId,
+      data.reviewText,
+      onlyFilledPlus,
+      onlyFilledMinus
+    );
+    setCreateReviewWindow(false);
+    reset();
+  };
   //comments component
 
   if (isLoading) {
@@ -126,7 +166,7 @@ export default function MoviePage() {
               >
                 <SwiperSlide className="screenshots__slide">
                   <video
-                    src={`http://192.168.0.101:3500/api/getTrailer`}
+                    src={`http://192.168.0.198:3500/api/getTrailer`}
                     width={"100%"}
                     height={200}
                     controls
@@ -163,21 +203,54 @@ export default function MoviePage() {
         <div className="movie-row">
           <div className="reviews">
             <div className="reviews__title">Отзывы:</div>
-            {reviews.map((review) => {
-              return <></>;
-            })}
-            <div className="review">
-              <div className="review__user">
-                <div className="review__login">{reviews[0]?.username}</div>
-                <div className="review__rating">{reviews[0]?.rating}/10</div>
-              </div>
-              <div className="review__text">{reviews[0]?.text}</div>
-              <div className="review__reacting">
-                <div className="review__reacting_likes">35</div>
-                <div className="review__reacting_dislikes">20</div>
-              </div>
-              <div className="review__btn review__btn_next"></div>
-            </div>
+
+            <Swiper
+              slidesPerView={1}
+              pagination={{
+                clickable: true,
+              }}
+              modules={[Pagination]}
+            >
+              {reviews?.length ? (
+                reviews.map((review) => {
+                  return (
+                    <SwiperSlide className="review">
+                      <div className="review__user">
+                        <div className="review__login">
+                          {review?.user.username}
+                        </div>
+                        <div className="review__rating">{/* {reviews */}</div>
+                      </div>
+                      <div className="review__text">{review.text}</div>
+                      <div className="review__list">
+                        <p className="review__title">Достоинства:</p>
+                        {review.dignities.map((plus) => (
+                          <div className="review__plus">{plus.plus}</div>
+                        ))}
+                      </div>
+                      <div className="review__list">
+                        <p className="review__title">Недостатки:</p>
+                        {review.disadvantages.map((minus) => (
+                          <div className="review__minus">{minus.minus}</div>
+                        ))}
+                      </div>
+                      {/* <div className="review__reacting">
+                        <div className="review__reacting_likes">35</div>
+                        <div className="review__reacting_dislikes">20</div>
+                      </div> */}
+                      {/* <div className="review__btn review__btn_next"></div> */}
+                    </SwiperSlide>
+                  );
+                })
+              ) : (
+                <p className="reviews__empty">Отзывов нет</p>
+              )}
+            </Swiper>
+            <Button
+              text="Написать отзыв"
+              isDarkBackground
+              onClick={checkLogin}
+            />
           </div>
           <div className="actors">
             <div className="reviews__title">Актёры:</div>
@@ -220,6 +293,70 @@ export default function MoviePage() {
               );
             })}
         </div>
+        {isCreateReviewWindow && (
+          <div
+            className="playlist__modal"
+            onClick={() => {
+              setCreateReviewWindow(false);
+              reset();
+            }}
+          >
+            <form
+              className="review-form"
+              onClick={(e) => e.stopPropagation()}
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <p className="review-form__title">Ваш отзыв:</p>
+              <Input
+                type={"textarea"}
+                register={register}
+                placeholder="Введите текст"
+                name="reviewText"
+              ></Input>
+              <p className="review-form__title">Достоинства:</p>
+
+              {fields.map((field, index) => {
+                return (
+                  <div className="row review-form__field" key={field.id}>
+                    <p className="review-form__point">+</p>
+                    <Input
+                      // type={"textarea"}
+                      register={register}
+                      placeholder="Введите текст"
+                      name={`reviewPlus.${index}.plus`}
+                    ></Input>
+                  </div>
+                );
+              })}
+              <Button
+                type={"button"}
+                text="Добавить"
+                onClick={() => append({ plus: "" })}
+              ></Button>
+              <p className="review-form__title">Недостатки:</p>
+              {fieldsMinuses.map((field, index) => {
+                return (
+                  <div className="row review-form__field" key={field.id}>
+                    <p className="review-form__point">-</p>
+                    <Input
+                      // type={"textarea"}
+                      register={register}
+                      placeholder="Введите текст"
+                      name={`reviewMinus.${index}.minus`}
+                    ></Input>
+                  </div>
+                );
+              })}
+              <Button
+                type={"button"}
+                text="Добавить"
+                onClick={() => appendMinus({ minus: "" })}
+              ></Button>
+
+              <Button text="Отправить" />
+            </form>
+          </div>
+        )}
       </div>
     </>
   );

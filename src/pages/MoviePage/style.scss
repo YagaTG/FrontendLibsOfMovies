@@ -131,6 +131,8 @@
 .review {
   position: relative;
   width: auto;
+  max-height: 200px;
+  overflow-y: scroll;
   padding: 16px 16px;
   background-color: black;
   border: 2px solid white;
@@ -163,6 +165,23 @@
     }
     &_dislikes {
       color: red;
+    }
+  }
+  &__plus {
+    &::before {
+      content: "+";
+      color: greenyellow;
+      font-size: 24px;
+      font-weight: bold;
+    }
+  }
+  &__minus {
+    &::before {
+      content: "-";
+      color: red;
+      font-size: 24px;
+      font-weight: bold;
+      margin-right: 8px;
     }
   }
   &__btn {
@@ -230,5 +249,31 @@
   }
   &__text {
     padding: 0px 8px;
+  }
+}
+
+.review-form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40%;
+  height: fit-content;
+  padding: 16px 12px;
+  border: 2px solid black;
+  background-color: white;
+  transform: translate(-50%, -50%);
+
+  &__field {
+    margin-bottom: 8px;
+  }
+  &__title {
+    font-size: 20px;
+    color: black;
+  }
+  &__point {
+    margin-right: 8px;
+    font-weight: bold;
+    font-size: 18px;
+    color: black;
   }
 }
