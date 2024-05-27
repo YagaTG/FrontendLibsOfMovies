@@ -3,14 +3,18 @@ import { ISearch } from "./ISearch";
 import Button from "../Button/Button";
 import "./style.scss";
 
-export const Search = ({ handleData, placeholder, searchFunc }: ISearch) => {
+export const Search = ({
+  handleData,
+  placeholder,
+  searchFunc,
+  filters,
+}: ISearch) => {
   const [searchText, setSearchText] = useState("");
   const handleSearch = async () => {
     if (searchText.trim()) {
       console.log("Поиск по", searchText);
-      const data = await searchFunc(searchText);
+      const data = await searchFunc(searchText, filters);
       handleData(data, searchText);
-      
     }
   };
 
