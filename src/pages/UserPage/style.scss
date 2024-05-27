@@ -1,0 +1,18 @@
+.user-page {
+    padding: 20px 40px;
+    color: black;
+    &__data {
+        display: flex;
+    }
+    &__name {
+        font-size: 24px;
+        border-bottom: 2px solid black;
+        margin-bottom: 12px;
+    }
+    &__subtitle {
+        font-size: 24px;
+        font-weight: bold;
+        border-bottom: 2px solid black;
+        margin-bottom: 12px;
+    }
+}

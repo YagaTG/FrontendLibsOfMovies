@@ -145,3 +145,15 @@ export const addUserAvatar = async (data) => {
     .then((data) => succesFunc(data))
     .catch((err) => alert(err));
 };
+
+export const getMyMoviesRatings = (userId) => {
+  return fetch(
+    `http://${ip}:3500/api/getMyMoviesRatings?userId=${userId}`
+  ).then((res) => res.json());
+};
+
+export const getUserProfile = (userId) => {
+  return fetch(`http://${ip}:3500/api/getUserProfile?userId=${userId}`).then(
+    (res) => res.json()
+  );
+};

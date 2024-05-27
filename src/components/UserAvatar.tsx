@@ -1,3 +1,5 @@
+import { ip } from "../config.server";
+
 export const UserAvatar = ({
   username,
   className,
@@ -7,7 +9,7 @@ export const UserAvatar = ({
 }) => {
   return (
     <img
-      src={`http://192.168.0.100:3500/api/getUserAvatar?username=${username}`}
+      src={`http://${ip}:3500/api/getUserAvatar?username=${username}`}
       alt=""
       className={className}
     />
