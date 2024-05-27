@@ -7,6 +7,7 @@ export const Selector = ({
   loadOptions,
   handleChange,
   defaultOptions,
+  defaultValues,
 }) => {
   const CustomOption = ({ innerProps, isDisabled, children }) => {
     return !isDisabled ? (
@@ -21,16 +22,27 @@ export const Selector = ({
         <AsyncSelect
           loadOptions={loadOptions}
           defaultOptions={defaultOptions}
+          defaultValue={defaultValues}
           className="selector"
           components={{ Option: CustomOption }}
           isMulti
           placeholder="Введите название фильма.."
           onChange={handleChange}
         />
+      ) : type == "single-async" ? (
+        <AsyncSelect
+          loadOptions={loadOptions}
+          defaultOptions={defaultOptions}
+          defaultValue={defaultValues}
+          className="selector"
+          components={{ Option: CustomOption }}
+          placeholder="Введите название фильма.."
+          onChange={handleChange}
+        />
       ) : (
         <Select
           options={defaultOptions}
-          defaultValue={defaultOptions[0]}
+          placeholder="Сортировать:"
           className="selector"
           components={{ Option: CustomOption }}
           isSearchable={false}
