@@ -8,6 +8,7 @@ export const Input = ({
   onChange,
   validation = false,
   type = "text",
+  defaultValue,
   ...inputProps
 }: IInputProps) => {
   return (
@@ -19,6 +20,7 @@ export const Input = ({
           onChange={onChange}
           placeholder={placeholder}
           name={name}
+          defaultValue={defaultValue ?? null}
           {...inputProps}
         />
       )}
@@ -28,6 +30,7 @@ export const Input = ({
           {...register(name, validation)}
           onChange={onChange}
           placeholder={placeholder}
+          defaultValue={defaultValue ?? null}
           name={name}
           type="textarea"
           {...inputProps}
