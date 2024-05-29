@@ -6,6 +6,7 @@ import "./style.scss";
 import { Search } from "../../ui/Search/Search";
 import { searchMovies } from "../../helpers/search";
 import { Selector } from "../../ui/Selector/Selector";
+import { MovieAfisha } from "../../components/MovieAfisha";
 
 export default function MoviesPage() {
   const [movies, setMovies] = useState([]);
@@ -25,10 +26,10 @@ export default function MoviesPage() {
     return (
       <div className="movies__item" key={movieData.id}>
         <a className="movieItem" href={`movie/${movieData.id}`}>
-          <img
+          <MovieAfisha
+            path={movieData.img}
+            movieName={movieData.name}
             className="movieItem__picture"
-            src={`/movies/${movieData.img}`}
-            alt={`Постер фильма ${movieData.name}`}
           />
           <div className="movieItem_hover">
             <div className="movieItem_hover_content">
