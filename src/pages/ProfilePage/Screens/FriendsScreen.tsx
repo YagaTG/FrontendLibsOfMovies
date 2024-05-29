@@ -144,7 +144,7 @@ export const FriendsScreen = ({ user, refreshFunc }) => {
 
   return (
     <div className="profile__wrapper">
-      <div className="profile__title">Список друзей</div>
+      <h2 className="profile__title">Список друзей</h2>
       <Search
         placeholder={"Введите имя пользователя"}
         searchFunc={searchUser}

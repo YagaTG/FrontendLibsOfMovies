@@ -4,7 +4,6 @@ import { Input } from "../../ui/Input/Input";
 import "./style.scss";
 import { useForm } from "react-hook-form";
 
-import axios from "axios";
 import { redirect, useNavigate } from "react-router-dom";
 import { ip } from "../../config.server";
 
@@ -89,28 +88,8 @@ export default function LoginPage() {
 
             <Button text={"Войти"} color={"black"}></Button>
           </form>
-          <span>запомнить меня</span>
         </div>
         {error && <p style={{ color: "red" }}>{error}</p>}
-        <Button
-          text={"Проверить статус"}
-          color={"black"}
-          onClick={
-            () =>
-              fetch(`http://${ip}:3500/status`, {
-                method: "GET",
-                credentials: "include",
-              })
-            // axios
-            //   .get("http://192.168.0.100:3500/status", {
-            //     withCredentials: true,
-            //   })
-            //   .then((r) => console.log(r))
-            //   .catch((err) => setError("Ошибка сервера"))
-          }
-        >
-          {" "}
-        </Button>
       </div>
     </>
   );

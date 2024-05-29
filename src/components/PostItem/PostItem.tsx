@@ -15,7 +15,9 @@ export const PostItem = ({ data }) => {
         </div>
         <div className="post__text">{data.text}</div>
         <a className="post__movie" href={`/movie/${data.movieId}`}>
-          <div className="post__movie-name">{data.movie.name} ({data.movie.year})</div>
+          <div className="post__movie-name">
+            {data.movie.name} ({data.movie.year})
+          </div>
         </a>
       </div>
     </div>
