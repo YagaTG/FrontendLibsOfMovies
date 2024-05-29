@@ -157,3 +157,11 @@ export const getUserProfile = (userId) => {
     (res) => res.json()
   );
 };
+
+export const checkOnAdmin = async () => {
+  const res = await fetch(`http://${ip}:3500/api/checkMe`, {
+    credentials: "include",
+  });
+  const data = await res.json();
+  return data;
+};

@@ -54,3 +54,27 @@ export const getMovieRating = (userId: string, movieId: string) => {
     { credentials: "include" }
   ).then((r) => r.json());
 };
+
+export const createMovie = (movieData) => {
+  const { name, description, year } = movieData;
+  return fetch(`http://${ip}:3500/api/createMovie`, {
+    method: "POST",
+    body: JSON.stringify({ name, description, year }),
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Credentials": "true",
+    },
+    credentials: "include",
+  }).then((r) => r.json());
+};
+
+export const uploadMovieImage = (data, movieId) => {
+  return fetch(`http://${ip}:3500/api/addMovieImage?movieId=${movieId}`, {
+    method: "post",
+    body: data,
+    headers: {
+      // "Content-Type": "multipart/form-data",
+      "Access-Control-Allow-Credentials": "true",
+    },
+  }).then((r) => r.json());
+};
