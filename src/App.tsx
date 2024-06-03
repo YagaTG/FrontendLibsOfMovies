@@ -11,12 +11,14 @@ import { QueryClientProvider, QueryClient } from "react-query";
 import { MessengerPage } from "./pages/MessengerPage/MessengerPage";
 import { UserPage } from "./pages/UserPage/UserPage";
 import { AdminPage } from "./pages/AdminPage/AdminPage";
+import { ToastContainer } from "react-toastify";
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <>
+      <ToastContainer progressClassName={"testw"} />
       <QueryClientProvider client={queryClient}>
         <Routes>
           <Route path="/" element={<MainPage />} />
