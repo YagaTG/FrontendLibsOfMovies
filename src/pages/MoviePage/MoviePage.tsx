@@ -17,7 +17,8 @@ import "./style.scss";
 import { Pagination } from "swiper/modules";
 import { useQuery } from "react-query";
 import { useForm, useFieldArray } from "react-hook-form";
-
+import { MovieAfisha } from "../../components/MovieAfisha";
+import { useNotify } from "../../hooks/useNotify";
 export default function MoviePage() {
   const { isLoading: isRatingLoading, data: prevRating } = useQuery(
     "movieRating",
@@ -33,7 +34,7 @@ export default function MoviePage() {
   const [currentRating, setCurrentRating] = useState(null);
   const [isCreateReviewWindow, setCreateReviewWindow] = useState(false);
   const { movieId } = useParams();
-
+  const { notify } = useNotify();
   const form = useForm({
     defaultValues: {
       reviewText: "",
@@ -71,9 +72,12 @@ export default function MoviePage() {
   };
 
   const handleCreateComment = () => {
-    console.log(userData);
-    if (true) {
-      createComment(movieId, userData.id, commentText);
+    const userId = JSON.parse(localStorage.getItem("userData")).id ?? null;
+    if (userId) {
+      createComment(movieId, userId, commentText).then((data) => {
+        console.log(data);
+        if (data?.message == "succes") notify("Комментарий успешно создан");
+      });
     }
   };
   // review component
@@ -114,12 +118,11 @@ export default function MoviePage() {
         <div className="movie-wrapper">
           <div className="movie-row">
             <div className="movie__afisha">
-              {/* <img className="movie__img" src={`${movie?.img}`} alt={`Постер фильма ${movie?.name}`}/> */}
-              <img
+              <MovieAfisha
                 className="movie__img"
-                src={`/movies/${movie?.img}`}
-                alt={`Постер фильма ${movie?.name}`}
-              />
+                path={movie?.img}
+                movieName={movie?.name}
+              ></MovieAfisha>
               <Button isDarkBackground text={"Смотреть позже"}></Button>
             </div>
             <div className="movie__info">
@@ -166,7 +169,7 @@ export default function MoviePage() {
               >
                 <SwiperSlide className="screenshots__slide">
                   <video
-                    src={`http://192.168.0.198:3500/api/getTrailer`}
+                    src={`http://192.168.0.102:3500/api/getTrailer`}
                     width={"100%"}
                     height={200}
                     controls
@@ -213,34 +216,30 @@ export default function MoviePage() {
             >
               {reviews?.length ? (
                 reviews.map((review) => {
-                  return (
-                    <SwiperSlide className="review">
-                      <div className="review__user">
-                        <div className="review__login">
-                          {review?.user.username}
+                  if (review.isPublished)
+                    return (
+                      <SwiperSlide className="review">
+                        <div className="review__user">
+                          <div className="review__login">
+                            {review?.user.username}
+                          </div>
+                          <div className="review__rating">{/* {reviews */}</div>
                         </div>
-                        <div className="review__rating">{/* {reviews */}</div>
-                      </div>
-                      <div className="review__text">{review.text}</div>
-                      <div className="review__list">
-                        <p className="review__title">Достоинства:</p>
-                        {review.dignities.map((plus) => (
-                          <div className="review__plus">{plus.plus}</div>
-                        ))}
-                      </div>
-                      <div className="review__list">
-                        <p className="review__title">Недостатки:</p>
-                        {review.disadvantages.map((minus) => (
-                          <div className="review__minus">{minus.minus}</div>
-                        ))}
-                      </div>
-                      {/* <div className="review__reacting">
-                        <div className="review__reacting_likes">35</div>
-                        <div className="review__reacting_dislikes">20</div>
-                      </div> */}
-                      {/* <div className="review__btn review__btn_next"></div> */}
-                    </SwiperSlide>
-                  );
+                        <div className="review__text">{review.text}</div>
+                        <div className="review__list">
+                          <p className="review__title">Достоинства:</p>
+                          {review.dignities.map((plus) => (
+                            <div className="review__plus">{plus.plus}</div>
+                          ))}
+                        </div>
+                        <div className="review__list">
+                          <p className="review__title">Недостатки:</p>
+                          {review.disadvantages.map((minus) => (
+                            <div className="review__minus">{minus.minus}</div>
+                          ))}
+                        </div>
+                      </SwiperSlide>
+                    );
                 })
               ) : (
                 <p className="reviews__empty">Отзывов нет</p>
