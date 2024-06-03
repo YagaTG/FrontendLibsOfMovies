@@ -2,7 +2,7 @@
   width: 25%;
 }
 
-.container {
+.main-page__container {
   height: 100%;
 }
 
@@ -10,6 +10,7 @@
   &__container {
     background-color: red;
     background-image: url("/main-page/main_img.png");
+    height: 480px;
   }
 
   &__wrapper {
@@ -17,7 +18,7 @@
     display: flex;
     padding: 20px 40px;
     background-color: rgba($color: black, $alpha: 0.3);
-    
+    height: 480px;
   }
   &__title {
     max-width: 45%;
@@ -58,16 +59,17 @@
     margin-right: 40px;
     padding: 8px 8px;
     border: 4px solid white;
-    // height: 100%;
-    // overflow: scroll;
+    height: 240px;
   }
   &__header {
     font-size: 24px;
     font-weight: bold;
     border-bottom: 2px solid white;
+    margin-bottom: 24px;
   }
   &__price {
     font-size: 20px;
+    margin-bottom: 24px;
   }
   &__btn {
   }

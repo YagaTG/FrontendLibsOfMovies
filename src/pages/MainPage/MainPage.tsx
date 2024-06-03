@@ -6,17 +6,15 @@ import "./style.scss";
 export default function MainPage() {
   return (
     <>
-      <div className="container">
-        <Header></Header>
-        {/* <MySwiper></MySwiper> */}
-        {/* <h2 className="main-page__title">Случайная подборка</h2> */}
+      <Header></Header>
+      <div className="main-page__container">
         <div className="heading__container">
           <div className="heading__wrapper">
             <div className="heading__title">
               Смотрите и обсуждайте любимые фильмы
             </div>
             <div className="heading__registration">
-              <Button text={"Регистрация"} color={"white"}></Button>
+              <Button text={"Регистрация"} isDarkBackground></Button>
               <div className="registation__desc">
                 Зарегистрируйтесь и получите 14 дней подписки
               </div>
@@ -30,11 +28,19 @@ export default function MainPage() {
           <div className="prices__subscribes">
             <div className="subscribe__item">
               <div className="subscribe__header">1 месяц:</div>
-              <p className="subscribe__price">200 руб/месяц</p>
-              <Button text={"Купить"} color={"white"}></Button>
+              <p className="subscribe__price">300 руб/месяц</p>
+              <Button text={"Купить"} isDarkBackground></Button>
             </div>
-            <div className="subscribe__item"></div>
-            <div className="subscribe__item"></div>
+            <div className="subscribe__item">
+              <div className="subscribe__header">1 месяц:</div>
+              <p className="subscribe__price">300 руб/месяц</p>
+              <Button text={"Купить"} isDarkBackground></Button>
+            </div>
+            <div className="subscribe__item">
+              <div className="subscribe__header">1 месяц:</div>
+              <p className="subscribe__price">300 руб/месяц</p>
+              <Button text={"Купить"} isDarkBackground></Button>
+            </div>
           </div>
         </div>
         <div className="main-swiper__container">
@@ -43,7 +49,6 @@ export default function MainPage() {
           fugit saepe ut tenetur fuga libero, maiores omnis eius iste minima
           fugiat.
         </div>
-        <footer className="footer"></footer>
       </div>
     </>
   );
