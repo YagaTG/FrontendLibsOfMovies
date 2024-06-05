@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Header } from "../../components/Header/Header";
-import "./style.scss";
 import Button from "../../ui/Button/Button";
 import { useQuery } from "react-query";
 import { createPost, getAllPosts } from "../../api/Posts";
@@ -9,35 +8,44 @@ import { useForm } from "react-hook-form";
 import { Input } from "../../ui/Input/Input";
 import { Selector } from "../../ui/Selector/Selector";
 import { searchMovies } from "../../helpers/search";
+import { useUser } from "../../hooks/useUser";
+
+import "./style.scss";
+import { useNotify } from "../../hooks/useNotify";
 
 export const FeedPage = () => {
-  const { data: posts } = useQuery("posts", () => getAllPosts());
+  const { data: posts, refetch: postsRefetch } = useQuery("posts", () =>
+    getAllPosts()
+  );
   const [isCreatePostWindow, setCreatePostWindow] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
 
   const form = useForm();
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem("userData"))
-  );
+  const { notify } = useNotify();
+  const { user } = useUser();
   const { register, handleSubmit, reset } = form;
   const onSubmit = (data) => {
-    // console.log(data);
-    createPost(user.id, data.title, data.text, selectedMovie.id);
+    createPost(user.id, data.title, data.text, selectedMovie?.id).then(
+      (data) => {
+        if (data.message == "success") {
+          notify("Запись успешно создана!");
+        }
+        setSelectedMovie(null);
+        setCreatePostWindow(false);
+        postsRefetch();
+      }
+    );
   };
 
   const getMoviesList = async (searchValue, callback) => {
-    // const res = await
     const data = await searchMovies(searchValue);
-    console.log(data);
     const moviess = data.map((item) => {
       return { value: item.name, label: item.name, id: item.id };
     });
-    console.log(moviess);
 
     const filteredMovies = moviess.filter((item) => {
       return item.label.toLowerCase().includes(searchValue.toLowerCase());
     });
-    console.log(filteredMovies);
     callback(filteredMovies);
   };
 
@@ -50,8 +58,7 @@ export const FeedPage = () => {
     <>
       <Header />
       <div className="container">
-        {/* <h1 className="feed-title">Лента</h1> */}
-        {user && user.id && (
+        {user && (
           <Button
             text="Создать запись"
             onClick={() => setCreatePostWindow(true)}
