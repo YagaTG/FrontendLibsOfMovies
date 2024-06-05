@@ -7,8 +7,10 @@ export function useUser() {
 
   useEffect(() => {
     const userData = localStorage.getItem("userData") ?? null;
-    console.log("TEST");
-    setUser(JSON.parse(userData));
+
+    getMe().then((data) => {
+      data.id ? setUser(data) : setUser(null);
+    });
   }, []);
 
   const refreshUserData = () => {

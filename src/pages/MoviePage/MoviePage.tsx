@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Header } from "../../components/Header/Header";
 import Button from "../../ui/Button/Button";
 import { Input } from "../../ui/Input/Input";
@@ -7,7 +7,6 @@ import { useParams } from "react-router-dom";
 import { createComment, getMovieComments } from "../../api/Comment";
 import { createReview, getMovieReviews } from "../../api/Review";
 import { useUser } from "../../hooks/useUser";
-import { UserAvatar } from "../../components/UserAvatar";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -19,17 +18,21 @@ import { useQuery } from "react-query";
 import { useForm, useFieldArray } from "react-hook-form";
 import { MovieAfisha } from "../../components/MovieAfisha";
 import { useNotify } from "../../hooks/useNotify";
+import { CommentItem } from "../../components/CommentItem/CommentItem";
 export default function MoviePage() {
+  const { user } = useUser();
+
   const { isLoading: isRatingLoading, data: prevRating } = useQuery(
     "movieRating",
-    () =>
-      getMovieRating(JSON.parse(localStorage.getItem("userData")).id, movieId)
+    () => getMovieRating(user.id ?? null, movieId),
+    {
+      enabled: Boolean(user),
+    }
   );
   const { isLoading, data: movie } = useQuery("movieData", () =>
     getMovie(movieId)
   );
   const { data: reviews } = useQuery("reviews", () => getMovieReviews(movieId));
-  const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
   const [currentRating, setCurrentRating] = useState(null);
   const [isCreateReviewWindow, setCreateReviewWindow] = useState(false);
@@ -51,18 +54,16 @@ export default function MoviePage() {
     control, // control props comes from useForm (optional: if you are using FormContext)
     name: "reviewMinus", // unique name for your Field Array
   });
-  useEffect(() => {
-    console.log(movieId);
-    getMovieComments(movieId, setComments);
-  }, []);
+
+  const {
+    data: comments,
+    isLoading: isCommentsLoading,
+    refetch: commentsRefetch,
+  } = useQuery("comments", () => getMovieComments(movieId));
 
   const handleRating = () => {
-    if (true && currentRating) {
-      ratingMovie(
-        JSON.parse(localStorage.getItem("userData")).id,
-        movieId,
-        currentRating
-      ).then(() => {
+    if (user && currentRating) {
+      ratingMovie(user.id, movieId, currentRating).then(() => {
         console.log(1);
       });
     } else {
@@ -72,15 +73,20 @@ export default function MoviePage() {
   };
 
   const handleCreateComment = () => {
-    const userId = JSON.parse(localStorage.getItem("userData")).id ?? null;
+    const userId = user?.id;
     if (userId) {
-      createComment(movieId, userId, commentText).then((data) => {
-        console.log(data);
-        if (data?.message == "succes") notify("Комментарий успешно создан");
-      });
+      if (commentText.trim())
+        createComment(movieId, userId, commentText).then((data) => {
+          if (data?.message == "succes") {
+            commentsRefetch();
+            notify("Комментарий успешно создан");
+          }
+        });
+      else notify("Введите текст комментария");
+    } else {
+      // TODO: сделать модальное окно, предлагающее авторизацию
     }
   };
-  // review component
 
   const checkLogin = () => {
     const userData = localStorage.getItem("userData");
@@ -88,6 +94,7 @@ export default function MoviePage() {
       setCreateReviewWindow(true);
     } else {
       console.log("Unlogin");
+      // TODO: Окно ВОЙТИ
     }
   };
 
@@ -106,7 +113,6 @@ export default function MoviePage() {
     setCreateReviewWindow(false);
     reset();
   };
-  //comments component
 
   if (isLoading) {
     return <h2 style={{ color: "black" }}>Loading..</h2>;
@@ -276,20 +282,7 @@ export default function MoviePage() {
         <div className="comments__comments">
           {comments &&
             comments.map((comment) => {
-              return (
-                <div className="comment">
-                  <div className="comment__user">
-                    <UserAvatar
-                      username={comment?.user.username}
-                      className="comment__avatar"
-                    ></UserAvatar>
-                    <div className="comment__nickname">
-                      {comment?.user.username}
-                    </div>
-                  </div>
-                  <div className="comment__text">{comment?.text}</div>
-                </div>
-              );
+              return CommentItem(comment);
             })}
         </div>
         {isCreateReviewWindow && (

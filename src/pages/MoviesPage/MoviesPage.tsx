@@ -100,6 +100,7 @@ export default function MoviesPage() {
           handleData={handleFindedMovies}
           searchFunc={searchMovies}
           filters={filters}
+          placeholder="Введите название..."
         />
         <div className="sort-handlers row">
           <Selector defaultOptions={SORTS} handleChange={sortMovie}></Selector>
@@ -153,9 +154,6 @@ export default function MoviesPage() {
                   }
                 />
               </div>
-            </div>
-            <div className="filters__filter">
-              <div className="filters__sub-title">Жанры:</div>
             </div>
             <Button text="Показать" onClick={filteringMovie} />
           </div>

@@ -1,19 +1,10 @@
-import { useEffect, useState } from "react";
-import "./style.scss";
 import Dropdown from "../../ui/Dropdown/Dropdown";
+import { useUser } from "../../hooks/useUser";
+
+import "./style.scss";
 
 export const Header = () => {
-  const [isShowTooltip, setShowTooltip] = useState(false);
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    if (localStorage.getItem("userData")) {
-      setUser(JSON.parse(localStorage.getItem("userData")));
-    }
-  }, []);
-  const showTooltip = () => {
-    if (isShowTooltip) setShowTooltip(false);
-    else setShowTooltip(true);
-  };
+  const { user } = useUser();
 
   return (
     <>
@@ -26,9 +17,11 @@ export const Header = () => {
           <a href="/feednews" className="header__link">
             Лента
           </a>
-          <a href="/messenger" className="header__link">
-            Сообщения
-          </a>
+          {user && (
+            <a href="/messenger" className="header__link">
+              Сообщения
+            </a>
+          )}
         </div>
         <div className="header__col">
           {user ? (
@@ -37,14 +30,9 @@ export const Header = () => {
               headerElem={<a className="header__link">{user.username}</a>}
             />
           ) : (
-            <Dropdown
-              isHeader
-              headerElem={
-                <a href="/login" className="header__link">
-                  Войти
-                </a>
-              }
-            />
+            <a href="/login" className="header__link">
+              Войти
+            </a>
           )}
         </div>
       </div>

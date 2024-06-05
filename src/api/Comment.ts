@@ -9,39 +9,27 @@ export interface IComment {
   createdAt: number;
 }
 
-export const getMovieComments = (
-  movieId: string | undefined,
-  succesFunc: (data: IComment[]) => {}
-): void => {
+export const getMovieComments = (movieId: string | undefined): void => {
   // Запрос возвращающий все комментарии к фильму
-  const data = fetch(
+  return fetch(
     `http://${ip}:3500/api/getMovieComments?movieId=${movieId}`
-  )
-    .then((r) => r.json())
-    .then((data) => succesFunc(data))
-    .catch((err) => alert(err));
-  return;
+  ).then((r) => r.json());
 };
 
 export const createComment = (
   movieId: number,
   authorId: number,
-  text: string,
-  authorUsername: string
+  text: string
 ) => {
-  // Запрос создания комментария к фильму
-  const data = fetch(`http://${ip}:3500/api/createComment`, {
+  return fetch(`http://${ip}:3500/api/createComment`, {
     method: "post",
     credentials: "include",
-    body: JSON.stringify({ movieId, authorId, text, authorUsername }),
+    body: JSON.stringify({ movieId, authorId, text }),
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Credentials": "true",
     },
-  })
-    .then((r) => r.json())
-    .then((data) => console.log(data))
-    .catch((err) => alert(err));
+  }).then((r) => r.json());
 };
 
 export const deleteComment = (commentId: number) => {

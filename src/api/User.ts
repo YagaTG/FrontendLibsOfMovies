@@ -16,8 +16,8 @@ export const logout = () => {
   //   navigate(0);
 };
 
-export const getMe = (uid) => {
-  return fetch(`http://${ip}:3500/api/getMe?userId=${uid}`, {
+export const getMe = () => {
+  return fetch(`http://${ip}:3500/api/getMe`, {
     credentials: "include",
   }).then((res) => res.json());
 };

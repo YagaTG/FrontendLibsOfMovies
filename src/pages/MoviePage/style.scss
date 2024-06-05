@@ -233,12 +233,18 @@
 .comment {
   margin-bottom: 14px;
   color: black;
-  &__user {
+  &__header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 8px;
     padding: 4px 8px;
     border-bottom: 1px solid black;
+  }
+  &__user {
+    display: flex;
+    align-items: center;
+
     font-size: 18px;
   }
   &__avatar {
@@ -250,6 +256,12 @@
   }
   &__text {
     padding: 0px 8px;
+  }
+  &__nickname {
+    color: black;
+  }
+  &__date {
+    color: #666666;
   }
 }
 
