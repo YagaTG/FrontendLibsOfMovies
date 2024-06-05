@@ -50,4 +50,71 @@
     justify-content: center;
     color: gray;
   }
+  &__wrapper {
+    position: relative;
+    height: 100%;
+  }
+  &__header {
+    border-bottom: 2px solid black;
+    padding: 8px 0px;
+    display: flex;
+    justify-content: center;
+  }
+  &__name {
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  &__handler {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    padding: 8px;
+    color: black;
+    border-top: 2px solid black;
+  }
+  &__messages {
+    display: flex;
+    flex-direction: column;
+    max-height: 560px;
+    overflow-y: scroll;
+    padding: 12px 24px;
+  }
+}
+
+.create-dialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40%;
+  height: 400px;
+  padding: 16px 12px;
+  border: 2px solid black;
+  background-color: white;
+  transform: translate(-50%, -50%);
+}
+
+.user-item {
+  margin-bottom: 8px;
+  padding: 8px;
+  color: black;
+  border: 2px solid black;
+}
+
+.message {
+  margin-bottom: 8px;
+  color: black;
+  align-self: start;
+  padding: 4px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  background-color: rgb(58, 162, 114);
+  color: white;
+  &_my {
+    align-self: end;
+    background-color: rgb(57, 151, 251);
+  }
 }
