@@ -155,18 +155,24 @@ ul {
 }
 
 .playlist {
+  &__container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
   &__handlers {
     margin-bottom: 16px;
   }
   &__modal {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba($color: #fefefe, $alpha: 0.4);
+    z-index: 5;
   }
-  &__create-form {
+  &__form {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -184,8 +190,9 @@ ul {
     width: 40%;
     height: 80%;
     padding: 16px 12px;
+    color: white;
     border: 2px solid black;
-    background-color: white;
+    background-color: rgb(24, 24, 24);
     transform: translate(-50%, -50%);
   }
 }
@@ -199,30 +206,138 @@ ul {
   }
 }
 
-.collection__title {
-  margin-bottom: 8px;
-
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-  border-bottom: 2px solid black;
+.collection {
+  &__title {
+    margin-bottom: 12px;
+    padding: 8px 0px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 2px solid white;
+  }
+  &__desc {
+    margin-bottom: 12px;
+    text-align: center;
+    color: #eee;
+  }
+  &__movies {
+    margin-top: 12px;
+  }
+  &__movie-item {
+    padding: 8px 12px;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+  }
 }
 
 .playlist-item {
+  position: relative;
+  width: 24%;
+  margin-right: 24px;
+  &__handler {
+    position: absolute;
+    text-align: center;
+    top: 0px;
+    right: 16px;
+    font-size: 24px;
+    font-weight: bold;
+    user-select: none;
+    cursor: pointer;
+    &:hover {
+      color: #666;
+    }
+  }
   &__block {
     border: 2px solid black;
     height: 240px;
     cursor: pointer;
   }
+  &__img {
+    width: 100%;
+    height: 100%;
+  }
   &__name {
     text-align: center;
     font-size: 18px;
   }
-  width: 24%;
 }
 
 .react-select {
   &__control {
     background-color: red;
+  }
+}
+
+// SETTINGS SCREEN
+
+.profile {
+  &__avatar {
+    width: 30%;
+  }
+}
+
+.avatar {
+  &__img {
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+  }
+  &__input {
+    // background-color: black;
+  }
+  &__input::file-selector-button {
+    background-color: white;
+    border: 2px solid black;
+    padding: 8px;
+    color: black;
+    cursor: pointer;
+    &:hover {
+      background-color: black;
+      color: white;
+    }
+  }
+  &__btn {
+  }
+}
+
+// RATINGS SCREEN
+
+.ratings {
+  &__header {
+    display: flex;
+  }
+  &__col {
+    &_afisha {
+      width: 50%;
+      padding-left: 8px;
+      font-weight: bold;
+    }
+    &_rate {
+      width: 24%;
+      text-align: center;
+      font-weight: bold;
+    }
+  }
+}
+
+.rating-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-top: 1px solid black;
+  padding: 12px 8px;
+  color: black;
+  &__rating {
+    width: 24%;
+    text-align: center;
+    font-weight: bold;
+  }
+  &__afisha {
+    display: flex;
+    width: 50%;
+    cursor: pointer;
+    &:hover {
+      font-weight: bold;
+    }
   }
 }
