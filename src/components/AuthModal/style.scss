@@ -1,0 +1,17 @@
+.auth-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  height: 300px;
+  padding: 20px;
+  background-color: white;
+  border: 2px solid black;
+  &__text {
+    margin-bottom: 16px;
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+  }
+}

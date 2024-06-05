@@ -1,24 +1,27 @@
 import { useState } from "react";
+import { useNotify } from "../../hooks/useNotify";
+import { useUser } from "../../hooks/useUser";
+import { useQuery } from "react-query";
+import { useForm, useFieldArray } from "react-hook-form";
+import { useParams } from "react-router-dom";
+
 import { Header } from "../../components/Header/Header";
 import Button from "../../ui/Button/Button";
 import { Input } from "../../ui/Input/Input";
 import { getMovie, getMovieRating, ratingMovie } from "../../api/Movie";
-import { useParams } from "react-router-dom";
 import { createComment, getMovieComments } from "../../api/Comment";
 import { createReview, getMovieReviews } from "../../api/Review";
-import { useUser } from "../../hooks/useUser";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/pagination";
-
-import "./style.scss";
 
 import { Pagination } from "swiper/modules";
-import { useQuery } from "react-query";
-import { useForm, useFieldArray } from "react-hook-form";
 import { MovieAfisha } from "../../components/MovieAfisha";
-import { useNotify } from "../../hooks/useNotify";
 import { CommentItem } from "../../components/CommentItem/CommentItem";
+
+import "swiper/css";
+import "swiper/css/pagination";
+import "./style.scss";
+import { AuthModal } from "../../components/AuthModal/AuthModal";
+
 export default function MoviePage() {
   const { user } = useUser();
 
@@ -36,6 +39,7 @@ export default function MoviePage() {
   const [commentText, setCommentText] = useState("");
   const [currentRating, setCurrentRating] = useState(null);
   const [isCreateReviewWindow, setCreateReviewWindow] = useState(false);
+  const [isAuthModal, setAuthModal] = useState(false);
   const { movieId } = useParams();
   const { notify } = useNotify();
   const form = useForm({
@@ -62,12 +66,10 @@ export default function MoviePage() {
   } = useQuery("comments", () => getMovieComments(movieId));
 
   const handleRating = () => {
-    if (user && currentRating) {
-      ratingMovie(user.id, movieId, currentRating).then(() => {
-        console.log(1);
-      });
+    if ((user && currentRating) || (user && prevRating)) {
+      ratingMovie(user.id, movieId, currentRating);
     } else {
-      // TODO: сделать модальное окно, предлагающее авторизацию
+      setAuthModal(true);
       return;
     }
   };
@@ -84,17 +86,15 @@ export default function MoviePage() {
         });
       else notify("Введите текст комментария");
     } else {
-      // TODO: сделать модальное окно, предлагающее авторизацию
+      setAuthModal(true);
     }
   };
 
   const checkLogin = () => {
-    const userData = localStorage.getItem("userData");
-    if (userData) {
+    if (user) {
       setCreateReviewWindow(true);
     } else {
-      console.log("Unlogin");
-      // TODO: Окно ВОЙТИ
+      setAuthModal(true);
     }
   };
 
@@ -109,9 +109,13 @@ export default function MoviePage() {
       data.reviewText,
       onlyFilledPlus,
       onlyFilledMinus
-    );
-    setCreateReviewWindow(false);
-    reset();
+    ).then((data) => {
+      if (data.message == "success") {
+        notify("Отзыв отправлен");
+      }
+      setCreateReviewWindow(false);
+      reset();
+    });
   };
 
   if (isLoading) {
@@ -141,7 +145,7 @@ export default function MoviePage() {
                 <div className="description__text">{movie?.description}</div>
               </div>
               {prevRating ? (
-                <div>
+                <div className="movie__rate">
                   <p>Ваша оценка {prevRating.rating}</p>
                   <Button
                     isDarkBackground
@@ -349,6 +353,7 @@ export default function MoviePage() {
             </form>
           </div>
         )}
+        {isAuthModal && <AuthModal closeFunc={setAuthModal} />}
       </div>
     </>
   );

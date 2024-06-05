@@ -1,0 +1,12 @@
+.unlogin {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 120px 240px;
+    &__text {
+        font-size: 24px;
+        font-weight: bold;
+        color: black;
+    }
+}

@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { ip } from "../config.server";
 
 export interface User {
@@ -8,12 +7,12 @@ export interface User {
   mail: string;
 }
 
-// const navigate = useNavigate();
-
 export const registerUser = () => {};
 export const logout = () => {
   localStorage.removeItem("userData");
-  //   navigate(0);
+  return fetch(`http://${ip}:3500/api/logout`, {
+    credentials: "include",
+  }).then((res) => res.json());
 };
 
 export const getMe = () => {
