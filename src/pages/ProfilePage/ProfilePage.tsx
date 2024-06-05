@@ -12,6 +12,7 @@ import {
   PlaylistScreen,
 } from "./Screens/screens";
 import { RatingsScreen } from "./Screens/RatingsScreen";
+import Button from "../../ui/Button/Button";
 
 export default function ProfilePage(currentScreen: string) {
   const { user, refreshUserData } = useUser();
@@ -30,49 +31,55 @@ export default function ProfilePage(currentScreen: string) {
   return (
     <>
       <Header></Header>
-      <div className="profile-container">
-        <div className="sidebar">
-          <ul className="sidebar__nav">
-            <li
-              className="sidebar__item"
-              onClick={() => setActiveScreen("profile")}
-            >
-              Настройки пользователя
-            </li>
-            <li
-              className="sidebar__item"
-              onClick={() => setActiveScreen("friends")}
-            >
-              Друзья
-            </li>
-            <li
-              className="sidebar__item"
-              onClick={() => setActiveScreen("ratings")}
-            >
-              Оценки
-            </li>
-            <li
-              className="sidebar__item"
-              onClick={() => setActiveScreen("playlists")}
-            >
-              Подборки
-            </li>
-            <li
-              className="sidebar__item"
-              onClick={() => setActiveScreen("statistic")}
-            >
-              Статистика
-            </li>
-            <li
-              className="sidebar__item"
-              onClick={() => setActiveScreen("help")}
-            >
-              Поддержка
-            </li>
-          </ul>
+      {user ? (
+        <div className="profile-container">
+          <div className="sidebar">
+            <ul className="sidebar__nav">
+              <li
+                className="sidebar__item"
+                onClick={() => setActiveScreen("profile")}
+              >
+                Настройки пользователя
+              </li>
+              <li
+                className="sidebar__item"
+                onClick={() => setActiveScreen("friends")}
+              >
+                Друзья
+              </li>
+              <li
+                className="sidebar__item"
+                onClick={() => setActiveScreen("ratings")}
+              >
+                Оценки
+              </li>
+              <li
+                className="sidebar__item"
+                onClick={() => setActiveScreen("playlists")}
+              >
+                Подборки
+              </li>
+              <li
+                className="sidebar__item"
+                onClick={() => setActiveScreen("statistic")}
+              >
+                Статистика
+              </li>
+              <li
+                className="sidebar__item"
+                onClick={() => setActiveScreen("help")}
+              >
+                Поддержка
+              </li>
+            </ul>
+          </div>
+          {activeScreen && profileScreens[activeScreen]}
         </div>
-        {activeScreen && profileScreens[activeScreen]}
-      </div>
+      ) : (
+        <div className="profile-container">
+          Авторизуйтесь <Button text="Войти"></Button>
+        </div>
+      )}
     </>
   );
 }
