@@ -75,7 +75,7 @@ export default function LoginPage() {
                 placeholder={"Пароль"}
                 register={register}
                 name={"password"}
-                // type={"password"}
+                type={"password"}
                 validation={{
                   required: "Поле дожно быть заполнено",
                   validate: (formValue) => {
@@ -87,6 +87,7 @@ export default function LoginPage() {
             </div>
 
             <Button text={"Войти"} color={"black"}></Button>
+            <a className="form__link" href="/register">Регистрация</a>
           </form>
         </div>
         {error && <p style={{ color: "red" }}>{error}</p>}

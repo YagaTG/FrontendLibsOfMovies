@@ -107,6 +107,8 @@ ul {
   }
 
   &__name {
+    display: block;
+    color: black;
     border-bottom: 1px solid black;
     margin-bottom: 4px;
     font-weight: bold;

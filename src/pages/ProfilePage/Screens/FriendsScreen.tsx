@@ -48,7 +48,9 @@ export const FriendsScreen = ({ user, refreshFunc }) => {
           className="friends-item__avatar"
         ></UserAvatar>
         <div className="friends-item__data">
-          <div className="friends-item__name">{item?.username}</div>
+          <a href={`userpage/${item?.id}`} className="friends-item__name">
+            {item?.username}
+          </a>
           {type != "friend" ?? (
             <div className="friends-item__stats">
               <p className="friends-item__stat">Друзей: {item?.friends}</p>

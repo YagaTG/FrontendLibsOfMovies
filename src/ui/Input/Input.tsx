@@ -24,6 +24,18 @@ export const Input = ({
           {...inputProps}
         />
       )}
+      {type == "password" && (
+        <input
+          className="input"
+          {...register(name, validation)}
+          onChange={onChange}
+          placeholder={placeholder}
+          type="password"
+          name={name}
+          defaultValue={defaultValue ?? null}
+          {...inputProps}
+        />
+      )}
       {type == "textarea" && (
         <textarea
           className="textarea"

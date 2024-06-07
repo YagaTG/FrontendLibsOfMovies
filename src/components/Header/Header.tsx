@@ -10,7 +10,7 @@ export const Header = () => {
     <>
       <div className="header">
         <div className="header__col">
-          {!user && <a className="header__link">Главная</a>}
+          {!user && <a className="header__link" href="/">Главная</a>}
           <a href="/movies" className="header__link">
             Все фильмы
           </a>
